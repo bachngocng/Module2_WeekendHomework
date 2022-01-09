@@ -1,16 +1,18 @@
 package com.codegym;
 
-public class Products {
+import java.util.Comparator;
+
+public class Products implements Comparator<Products> {
     private int id;
     private String name;
-    private double price;
+    private long price;
     private String description;
 
     public Products() {
 
     }
 
-    public Products(int id, String name, double price, String description) {
+    public Products(int id, String name, long price, String description) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -33,11 +35,11 @@ public class Products {
         this.name = name;
     }
 
-    public double getPrice() {
+    public long getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(long price) {
         this.price = price;
     }
 
@@ -53,7 +55,13 @@ public class Products {
         return "Products ID: " + this.id + ", Name: " + this.name + ", Price" + this.price + ",Description: " + this.description;
     }
 
-    public int compareTo(Products product) {
-        return this.getName().compareTo(product.getName());
+    @Override
+    public int compare(Products o1, Products o2) {
+        int value = 0;
+        if(o1 == null && o2 == null){
+            return 0;
+        }
+        value = o1.getName().compareTo(o2.getName());
+        return value;
     }
 }

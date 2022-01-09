@@ -1,22 +1,24 @@
 package com.codegym;
 
-import java.lang.reflect.Array;
-import java.util.Scanner;
+
+
+import java.util.*;
 
 public class Main {
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         Products[] product = new Products[10];
-        product[1] = new Products(1, "IPhone 13 Pro Max", 43000000, "Siêu phẩm nhà Táo");
-        product[2] = new Products(2, "Samsung Galaxy Z Fold", 41500000, "Siêu phẩm màn gập");
-        product[3] = new Products(3, "Xiaomi 11T Pro", 13790000, "Điện thoại phân khúc tầm trung");
-        product[4] = new Products(4, "Oppo Reno6", 12990000, "Điện thoại phân khúc tầm trung");
-        product[5] = new Products(5, "Realme 8", 7290000, "Điện thoại phân khúc bình dân");
+        List<Products> productsList = new ArrayList<>();
+        productsList.add(new Products(1, "IPhone 13 Pro Max", 43000000, "Siêu phẩm nhà Táo"));
+        productsList.add(new Products(2, "Samsung Galaxy Z Fold", 41500000, "Siêu phẩm màn gập"));
+        productsList.add(new Products(3, "Xiaomi 11T Pro", 13790000, "Điện thoại phân khúc tầm trung"));
+        productsList.add(new Products(4, "Oppo Reno6", 12990000, "Điện thoại phân khúc tầm trung"));
+        productsList.add(new Products(5, "Realme 8", 7290000, "Điện thoại phân khúc bình dân"));
         // Hiển thị danh sách sản phẩm
         System.out.println("Danh sách sản phẩm: ");
-        for (int i = 0; i < product.length; i++) {
-            System.out.println(product[i].toString());
+        for (int i = 0; i < productsList.size(); i++) {
+            System.out.println(productsList.get(i).toString());
         }
 
         int choice;
@@ -24,44 +26,44 @@ public class Main {
         System.out.println("1. Thêm Sản phẩm");
         System.out.println("2. Xóa sản phẩm");
         System.out.println("3. Tìm kiếm sản phẩm");
-        System.out.println("4. Sắp xếp sản phẩm");
+        System.out.println("4. Sắp xếp sản phẩm");// chưa viết xong
         System.out.println("5. Cập nhật sản phẩm");
         System.out.println("0. Thoát");
-        System.out.println("Nhập lựa chọn: ");
         do {
             System.out.println("Nhập lựa chọn của bạn: ");
-            choice = sc.nextInt();
+            choice = Integer.parseInt(sc.nextLine());
+            System.out.println(choice + "");
             if (choice > 5) {
                 System.out.println("Menu chỉ có 5 lựa chọn");
             }
         }
-        while (choice > 0);
+        while (choice > 5 && choice <0);
         switch (choice) {
             case 1: {
                 System.out.println("Nhập tên sản phẩm mới: ");
                 String newName = sc.nextLine();
-                System.out.println("Nhập giá sản phẩm mới");
-                double newPrice = sc.nextDouble();
+                System.out.println("Nhập giá sản phẩm mới: ");
+                long newPrice = Long.parseLong(sc.nextLine());
                 System.out.println("Nhập mô tả sản phẩm mới: ");
-                String newDiscription = sc.nextLine();
-                Products[] newProducts = new Products[product.length + 1];
-                Products newProduct = new Products(6, newName, newPrice, newDiscription);
+                String newDescription = sc.nextLine();
+                List<Products> newProducts = new ArrayList<>();
+                Products newProduct = new Products(6, newName, newPrice, newDescription);
                 System.out.println("\nDanh sách sau khi thêm sản phẩm: ");
-                newProducts = themSanPham(product, 5, newProduct);
-                for (int i = 0; i < newProducts.length; i++) {
-                    System.out.println(newProducts[i].toString());
-                    break;
+                newProducts = themSanPham(productsList, 5, newProduct);
+                for (int i = 0; i < newProducts.size(); i++) {
+                    System.out.println(newProducts.get(i).toString());
                 }
+                break;
             }
             case 2: {
                 // Gọi hàm xóa sản phẩm
                 System.out.print("Nhập vị trí sản phẩm muốn xóa: ");
                 int index2 = sc.nextInt();
-                Products[] newProduct = new Products[4];
-                newProduct = xoaSanPham(String []product (), index2 - 1);
+                List<Products> newProduct = new ArrayList<>();
+                newProduct = xoaSanPham(productsList, index2 - 1);
                 System.out.println("\nMảng sau khi xóa sản phẩm: ");
-                for (int i = 0; i < newProduct.length; i++) {
-                    System.out.println(newProduct[i].toString());
+                for (int i = 0; i < newProduct.size(); i++) {
+                    System.out.println(newProduct.get(i).toString());
                 }
                 break;
             }
@@ -70,74 +72,86 @@ public class Main {
                 Scanner scanner1 = new Scanner(System.in);
                 System.out.println("Nhập tên sản phẩm muốn tìm");
                 String name = scanner1.nextLine();
-                int index = timKiemSanPham(product, name);
+                int index = timKiemSanPham(productsList, name);
                 if (index == -1) {
                     System.out.println("Sản phẩm không có trong danh sách");
                 } else {
-                    System.out.println(product[index].toString());
+                    System.out.println(productsList.get(index).toString());
                 }
                 break;
             }
             case 4: {
                 // Gọi hàm sắp xếp tên sản phẩm tử A-Z
-                Array.sort(product);
-                System.out.println("Mảng sau khi sắp xếp theo thứ tự id: ");
-                for (int i = 0; i < product.length; i++) {
-                    System.out.println(product[i].toString());
+                sapXepSanPham(productsList);
+                for(Products products : productsList){
+                    System.out.println(products);
                 }
                 break;
             }
             case 5:
+                //Goi ham cap nhat gia, ten
+                System.out.println("Thứ tự sản phẩm muốn cập nhật:");
+                int index = Integer.parseInt(sc.nextLine());
+                System.out.println("Nhập tên mới: ");
+                String newName = new String(sc.nextLine());
 
+                System.out.println("Nhập giá mới: ");
+                Long newPrice = new Long(Long.parseLong(sc.nextLine()));
+                List<Products> newDanhSach = updateSanPham(productsList, index, newPrice, newName);
 
+                for(Products products : newDanhSach){
+                    System.out.println(products);
+                }
         }
     }
 
 
-    public static String[] themSanPham(String[] array, int index, String value) { //hàm thêm sản phẩm
-        String[] newArr = new String[array.length + 1];
-        for (int i = 0; i < array.length; i++) {
-            if (i < index) {
-                newArr[i] = array[i];
-            } else if (i == index) {
-                newArr[i] = value;
-            } else {
-                newArr[i] = array[i - 1];
-            }
-        }
-        return newArr;
+    public static List<Products> themSanPham(List<Products> array, int index, Products product) { //hàm thêm sản phẩm
+//        Products[] newArr = new Products[array.length + 1];
+//        for (int i = 0; i < array.length; i++) {
+//            if (i < index) {
+//                newArr[i] = array[i];
+//            } else if (i == index) {
+//                newArr[i] = product ;
+//            } else {
+//                newArr[i] = array[i - 1];
+//            }
+//        }
+        array.add(product);
+        return array;
     }
 
 
-    public static String[] xoaSanPham(String[] array, int index) {
-        String[] newArray = new String[array.length - 1];
-        for (int i = 0; i < newArray.length; i++) {
-            if (i < index) {
-                newArray[i] = array[i];
-            } else {
-                newArray[i] = array[i + 1];
+    public static List<Products> xoaSanPham(List<Products> array, int index) {
+        List<Products> newArray = new ArrayList<>();
+        System.out.println(array.size() + "");
+        for (int i = 0; i < array.size() ; i++) {
+            if (i != index) {
+                newArray.add(array.get(i));
             }
         }
         return newArray;
     }
 
-    public static int timKiemSanPham(Products[] arr, String name) {
+    public static int timKiemSanPham(List<Products> arr, String name) {
         int index = -1;
-        for (int i = 0; i < arr.length; i++) {
-            if (arr[i].getName().equals(name)) {
+        for (int i = 0; i < arr.size(); i++) {
+            if (arr.get(i).getName().equals(name)) {
                 index = i;
             }
         }
         return index;
     }
 
-    public static Products[] changePrice(Products[] arr, int index, int newPrice) {
-        arr[index].setPrice(newPrice);
+    public static List<Products> updateSanPham(List<Products> arr, int index, long newPrice, String newName) {
+        arr.get(index).setPrice(newPrice);
+        arr.get(index).setName(newName);
         return arr;
     }
 
-    public static Products[] changeName(Products[] arr, int index, String newName) {
-        arr[index].setName(newName);
+       public static List sapXepSanPham(List arr) {
+        List<Products> ketQua = new ArrayList<>();
+        Collections.sort(arr);
         return arr;
     }
 }
